@@ -4,11 +4,10 @@ import PropTypes from "prop-types";
 
 export const Pagination = (props) => {
     const { itemsCount, pageSize, onPageChange, currentPage } = props;
-    console.log(itemsCount);
+
     const pageCount = Math.ceil(itemsCount / pageSize);
-    console.log(pageCount);
+
     const pages = _.range(1, pageCount + 1);
-    console.log(pages);
 
     if (pageCount === 1) return null;
 
