@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 export const TableHeader = ({ onSort, selectedSort, columns }) => {
+    const [status, setStatus] = useState();
+    useEffect(() => {
+        setStatus(selectedSort);
+    }, [selectedSort]);
+
     const handleSort = (item) => {
         if (selectedSort.path === item) {
+            // setStatus(item);
             onSort({
                 ...selectedSort,
                 order: selectedSort.order === "asc" ? "desc" : "asc"
@@ -28,23 +34,9 @@ export const TableHeader = ({ onSort, selectedSort, columns }) => {
                         scope="col"
                     >
                         {columns[column].name}
+                        {status && columns[column].path === status.path ? (status.order === "asc" ? <span><i className="bi bi-caret-down-fill"></i></span> : <span><i className="bi bi-caret-up-fill"></i></span>) : <span></span>}
                     </th>
                 ))}
-
-                {/* <th scope="col">Качества</th>
-                <th onClick={() => handleSort("profession.name")} scope="col">
-                    Профессия
-                </th>
-                <th onClick={() => handleSort("completedMeetings")} scope="col">
-                    Встретился, раз
-                </th>
-                <th onClick={() => handleSort("rate")} scope="col">
-                    Оценка
-                </th>
-                <th onClick={() => handleSort("bookmark")} scope="col">
-                    Избранное
-                </th>
-                <th /> */}
             </tr>
         </thead>
     );

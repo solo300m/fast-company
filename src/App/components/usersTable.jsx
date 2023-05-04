@@ -16,20 +16,26 @@ export const UsersTable = ({
     ...rest
 }) => {
     const columns = {
-        name: { path: "name", name: "Имя" },
+        name: { path: "name", name: "Имя", order: "asc" },
         qualities: {
             name: "Качества",
             component: (user) => <QualitiesList qualities={user.qualities} />
         },
-        professions: { path: "profession.name", name: "Профессия" },
+        professions: {
+            path: "profession.name",
+            name: "Профессия",
+            order: "asc"
+        },
         completedMeetings: {
             path: "completedMeetings",
-            name: "Встретился, раз"
+            name: "Встретился, раз",
+            order: "asc"
         },
         rate: { path: "rate", name: "Оценка" },
         bookmark: {
             path: "bookmark",
             name: "Избранное",
+            order: "asc",
             component: (user) => (
                 <BookMark
                     status={user.bookmark}
