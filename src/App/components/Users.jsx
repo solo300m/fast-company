@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import User from "./user";
 import { Pagination } from "./pagination";
 import { GroupList } from "./groupList";
 import { SearchStatus } from "./searchStatus";
 import PropTypes from "prop-types";
 import API from "../api/API";
+import { UsersTable } from "./usersTable";
+import _ from "lodash";
 
 export const Users = ({ users, ...rest }) => {
-    const pageSize = 2;
+    const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState(); // (API.professions.fetchAll());
     const [selectedProf, setSelectedProf] = useState();
     const [usersCut, setUsersCut] = useState();
+    const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
 
     useEffect(() => {
         /* API.professions.fetchAll().then((data) =>
@@ -28,7 +30,7 @@ export const Users = ({ users, ...rest }) => {
         setCurrentPage(1);
 
         API.users
-            .fetchProfession(selectedProf)
+            .fetchUsersByProfession(selectedProf)
             .then((data) => setUsersCut(data));
     }, [selectedProf]);
 
@@ -46,13 +48,19 @@ export const Users = ({ users, ...rest }) => {
         : users; */
     const filteredUsers = selectedProf ? usersCut : users;
 
-    const userCrop = paginate(filteredUsers, currentPage, pageSize);
+    const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
+
+    const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
     const handleProfessionSelect = (items) => {
         setSelectedProf(items);
     };
     const clearFilter = () => {
         setSelectedProf();
+    };
+
+    const handleSort = (item) => {
+        setSortBy(item);
     };
 
     return (
@@ -77,24 +85,12 @@ export const Users = ({ users, ...rest }) => {
             <div className="d-flex flex-column">
                 <SearchStatus length={filteredUsers.length} />
                 {users.length > 0 && (
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Имя</th>
-                                <th scope="col">Качества</th>
-                                <th scope="col">Профессия</th>
-                                <th scope="col">Встретился, раз</th>
-                                <th scope="col">Оценка</th>
-                                <th scope="col">Избранное</th>
-                                <th />
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {userCrop.map((user) => (
-                                <User key={user._id} {...rest} {...user} />
-                            ))}
-                        </tbody>
-                    </table>
+                    <UsersTable
+                        users={userCrop}
+                        onSort={handleSort}
+                        selectedSort={sortBy}
+                        {...rest}
+                    />
                 )}
                 <div className="d-flex justify-content-center">
                     <Pagination

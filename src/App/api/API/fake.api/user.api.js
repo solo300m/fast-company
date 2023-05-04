@@ -155,7 +155,7 @@ export const fetchName = (name) =>
         resolve(users.filter((user) => user.name === name));
     });
 
-export const fetchProfession = (prof) =>
+export const fetchUsersByProfession = (prof) =>
     new Promise((resolve) => {
         resolve(users.filter((user) => prof ? user.profession.name === prof.name : user));
     });
@@ -163,5 +163,5 @@ export const fetchProfession = (prof) =>
 export default {
     fetchAll,
     fetchName,
-    fetchProfession
+    fetchUsersByProfession
 };
