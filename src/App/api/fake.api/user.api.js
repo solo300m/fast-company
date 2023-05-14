@@ -150,18 +150,6 @@ const fetchAll = () =>
         }, 2000);
     });
 
-export const fetchName = (name) =>
-    new Promise((resolve) => {
-        resolve(users.filter((user) => user.name === name));
-    });
-
-export const fetchUsersByProfession = (prof) =>
-    new Promise((resolve) => {
-        resolve(users.filter((user) => prof ? user.profession.name === prof.name : user));
-    });
-
 export default {
-    fetchAll,
-    fetchName,
-    fetchUsersByProfession
+    fetchAll
 };

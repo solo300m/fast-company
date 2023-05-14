@@ -1,13 +1,11 @@
-import PropTypes from "prop-types";
 import React from "react";
+import PropTypes from "prop-types";
 
-// import { TableHeader } from "./tableHeader";
-// import { TableBody } from "./tableBody";
-import { BookMark } from "./bookmark";
-import { QualitiesList } from "./qualitiesList";
-import { Table } from "./table";
+import BookMark from "./bookmark";
+import QualitiesList from "./qualitiesList";
+import Table from "./table";
 
-export const UsersTable = ({
+const UserTable = ({
     users,
     onSort,
     selectedSort,
@@ -48,12 +46,7 @@ export const UsersTable = ({
             )
         }
     };
-
     return (
-        // <Table>
-        //     <TableHeader {...{ onSort, selectedSort, columns }} />
-        //     <TableBody {...{ columns, data: users }} />
-        // </Table>
         <Table
             onSort={onSort}
             selectedSort={selectedSort}
@@ -62,10 +55,13 @@ export const UsersTable = ({
         />
     );
 };
-UsersTable.propTypes = {
+
+UserTable.propTypes = {
     users: PropTypes.array.isRequired,
     onSort: PropTypes.func.isRequired,
     selectedSort: PropTypes.object.isRequired,
     onToggleBookMark: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired
 };
+
+export default UserTable;

@@ -1,21 +1,26 @@
-
 import React from "react";
-import { TableHeader } from "./tableHeader";
-import { TableBody } from "./tableBody";
-import PropType from "prop-types";
+import PropTypes from "prop-types";
+import TableBody from "./tableBody";
+import TableHeader from "./tableHeader";
 
-export const Table = ({ onSort, selectedSort, columns, data }) => {
+const Table = ({ onSort, selectedSort, columns, data, children }) => {
     return (
         <table className="table">
-            <TableHeader {...{ onSort, selectedSort, columns }} />
-            <TableBody {...{ columns, data }} />
+            {children || (
+                <>
+                    <TableHeader {...{ onSort, selectedSort, columns }} />
+                    <TableBody {...{ columns, data }} />
+                </>
+            )}
         </table>
     );
 };
 Table.propTypes = {
-    onSort: PropType.func.isRequired,
-    selectedSort: PropType.object.isRequired,
-    columns: PropType.object.isRequired,
-    data: PropType.array.isRequired
-    // children: PropType.array
+    onSort: PropTypes.func,
+    selectedSort: PropTypes.object,
+    columns: PropTypes.object,
+    data: PropTypes.array,
+    children: PropTypes.array
 };
+
+export default Table;

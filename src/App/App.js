@@ -1,36 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Users } from "./components/Users";
+import React from "react";
+import Users from "./components/users";
+import { NavBar } from "./components/navigation/navBar";
+import { Route, Switch } from "react-router-dom/cjs/react-router-dom.min";
+import { Main } from "./components/ui/main";
+import { Login } from "./components/ui/login";
+import { CardUser } from "./components/ui/cardUser";
 
-import API from "./api/API";
-
-export function App() {
-    const [users, setUsers] = useState([]);
-
-    useEffect(() => {
-        API.users.fetchAll().then((value) => setUsers(value));
-    }, []);
-
-    const handleDelete = (userId) => {
-        setUsers(users.filter((user) => user._id !== userId));
-    };
-    const handleToggleBookMark = (id) => {
-        setUsers(
-            users.map((user) => {
-                if (user._id === id) {
-                    return { ...user, bookmark: !user.bookmark };
-                }
-                return user;
-            })
-        );
-        console.log(id);
-    };
+function App() {
     return (
-        <div>
-            <Users
-                onDelete={handleDelete}
-                onToggleBookMark={handleToggleBookMark}
-                users={users}
-            />
-        </div>
+        <>
+            <NavBar />
+            <Switch>
+                <Route exact path="/" component={Main} />
+                <Route path="/login" component={Login} />
+                <Route path="/users" component={Users} />
+                <Route path="/carduser" component={CardUser} />
+            </Switch>
+        </>
     );
 }
+export default App;
