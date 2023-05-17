@@ -150,6 +150,11 @@ const fetchAll = () =>
         }, 2000);
     });
 
+export const getUserById = (id) => {
+    return users.find((value) => value._id === id);
+};
+
 export default {
-    fetchAll
+    fetchAll,
+    getUserById
 };

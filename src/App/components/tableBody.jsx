@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { Link, Switch, Route } from "react-router-dom/cjs/react-router-dom.min";
+import { CardUser } from "./ui/cardUser";
 
 const TableBody = ({ data, columns }) => {
     const renderContent = (item, column) => {
@@ -14,6 +16,7 @@ const TableBody = ({ data, columns }) => {
 
         return _.get(item, columns[column].path);
     };
+    // console.log(data);
     return (
         <>
             <tbody>
@@ -23,7 +26,15 @@ const TableBody = ({ data, columns }) => {
                             if (columns[column].path === "name") {
                                 return (
                                     <td key={column} className="nameClass">
-                                        {renderContent(item, column)}
+                                        <Link to={`carduser/${item._id}`}>
+                                            {renderContent(item, column)}
+                                        </Link>
+                                        <Switch>
+                                            <Route
+                                                path="/carduser/:userId?"
+                                                component={CardUser}
+                                            />
+                                        </Switch>
                                     </td>
                                 );
                             }

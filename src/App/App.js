@@ -14,7 +14,7 @@ function App() {
                 <Route exact path="/" component={Main} />
                 <Route path="/login" component={Login} />
                 <Route path="/users" component={Users} />
-                <Route path="/carduser" component={CardUser} />
+                <Route path="/carduser/:userId?" component={CardUser} />
             </Switch>
         </>
     );

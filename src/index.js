@@ -8,11 +8,6 @@ import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-const linkFabrica = () => {
-    const temp = document.querySelectorAll(".nameClass");
-    console.log(temp);
-};
-
 root.render(
     <BrowserRouter>
         <React.StrictMode>
@@ -25,4 +20,3 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-linkFabrica();
