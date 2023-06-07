@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import * as api from "../../api/fake.api/user.api";
+import * as api from "../api/fake.api/user.api";
 import { Card } from "./card";
 
 export const CardUser = () => {

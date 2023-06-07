@@ -7,6 +7,7 @@ import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 import UserTable from "./usersTable";
 import _ from "lodash";
+import { SearchField } from "./common/search/searchField";
 const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
@@ -41,6 +42,7 @@ const Users = () => {
 
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
+        setStrFound("");
     };
 
     const handlePageChange = (pageIndex) => {
@@ -50,10 +52,41 @@ const Users = () => {
         setSortBy(item);
     };
 
+    // Функционал строки Search...
+    const [temp, setTemp] = useState("");
+    const [strFound, setStrFound] = useState("");
+    useEffect(() => {
+        setTemp(strFound);
+    }, [strFound]);
+
+    const handleChange = (e) => {
+        setStrFound(e.target.value);
+    };
+    const handleSubmint = (e) => {
+        e.preventDefault();
+    };
+    console.log("searchField:", strFound);
+    console.log("Temp = ", temp);
+
+    const getUsersByFindMethod = () => {
+        if (selectedProf) {
+            return users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf));
+        } else if (temp) {
+            return users.filter((user) => JSON.stringify(user.name).includes(temp));
+        } else return users;
+    };
+    const checed = getUsersByFindMethod();
+    console.log("checed = ", checed);
+    // Конец блока Search...
+
     if (users) {
-        const filteredUsers = selectedProf
-            ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
-            : users;
+        const filteredUsers = getUsersByFindMethod();
+        // const filteredUsers = selectedProf
+        //     ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
+        //     : users;
+
+        const filteredSearch = temp ? users.filter((user) => JSON.stringify(user.name).includes(temp)) : users;
+        console.log("filteredSearch = ", filteredSearch);
 
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
@@ -64,6 +97,7 @@ const Users = () => {
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
         const clearFilter = () => {
             setSelectedProf();
+            setStrFound("");
         };
 
         return (
@@ -86,6 +120,16 @@ const Users = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    <div className="col-md-6 p-4 ">
+                        <form onSubmit={handleSubmint}>
+                            <SearchField
+                                id="search"
+                                name="search"
+                                value={strFound}
+                                onChange={handleChange}
+                            />
+                        </form>
+                    </div>
                     {count > 0 && (
                         <UserTable
                             users={usersCrop}

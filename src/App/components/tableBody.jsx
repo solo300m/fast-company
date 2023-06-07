@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Link, Switch, Route } from "react-router-dom/cjs/react-router-dom.min";
-import { CardUser } from "./ui/cardUser";
+import { CardUser } from "../layouts/cardUser";
 
 const TableBody = ({ data, columns }) => {
     const renderContent = (item, column) => {

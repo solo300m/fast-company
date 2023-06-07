@@ -2,9 +2,9 @@ import React from "react";
 import Users from "./components/users";
 import { NavBar } from "./components/navigation/navBar";
 import { Route, Switch } from "react-router-dom/cjs/react-router-dom.min";
-import { Main } from "./components/ui/main";
-import { Login } from "./components/ui/login";
-import { CardUser } from "./components/ui/cardUser";
+import { Main } from "./layouts/main";
+import { Login } from "./layouts/login";
+import { CardUser } from "./layouts/cardUser";
 
 function App() {
     return (
