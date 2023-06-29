@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { paginate } from "../utils/paginate";
-import Pagination from "../components/common/pagination";
-import api from "../api";
-import GroupList from "../components/common/groupList";
-import SearchStatus from "../components/ui/searchStatus";
-import UserTable from "../components/ui/usersTable";
+import { paginate } from "../../../utils/paginate";
+import Pagination from "../../common/pagination";
+import api from "../../../api";
+import GroupList from "../../common/groupList";
+import SearchStatus from "../../ui/searchStatus";
+import UserTable from "../../ui/usersTable";
 import _ from "lodash";
-import { SearchField } from "./common/search/searchField";
-const Users = () => {
+const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
+    const [searchQuery, setSearchQuery] = useState("");
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 8;
@@ -38,11 +38,15 @@ const Users = () => {
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedProf]);
+    }, [selectedProf, searchQuery]);
 
     const handleProfessionSelect = (item) => {
+        if (searchQuery !== "") setSearchQuery("");
         setSelectedProf(item);
-        setStrFound("");
+    };
+    const handleSearchQuery = ({ target }) => {
+        setSelectedProf(undefined);
+        setSearchQuery(target.value);
     };
 
     const handlePageChange = (pageIndex) => {
@@ -52,49 +56,21 @@ const Users = () => {
         setSortBy(item);
     };
 
-    // Функционал строки Search...
-    const [temp, setTemp] = useState("");
-    const [strFound, setStrFound] = useState("");
-    useEffect(() => {
-        setTemp(strFound);
-    }, [strFound]);
-
-    const handleChange = (e) => {
-        setStrFound(e.target.value);
-    };
-    const handleSubmint = (e) => {
-        e.preventDefault();
-    };
-    console.log("searchField:", strFound);
-    console.log("Temp = ", temp);
-
-    const getUsersByFindMethod = () => {
-        if (selectedProf) {
-            return users.filter(
-                (user) =>
-                    JSON.stringify(user.profession) ===
-                    JSON.stringify(selectedProf)
-            );
-        } else if (temp) {
-            return users.filter((user) =>
-                JSON.stringify(user.name).includes(temp)
-            );
-        } else return users;
-    };
-    const checed = getUsersByFindMethod();
-    console.log("checed = ", checed);
-    // Конец блока Search...
-
     if (users) {
-        const filteredUsers = getUsersByFindMethod();
-        // const filteredUsers = selectedProf
-        //     ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
-        //     : users;
-
-        const filteredSearch = temp
-            ? users.filter((user) => JSON.stringify(user.name).includes(temp))
+        const filteredUsers = searchQuery
+            ? users.filter(
+                  (user) =>
+                      user.name
+                          .toLowerCase()
+                          .indexOf(searchQuery.toLowerCase()) !== -1
+              )
+            : selectedProf
+            ? users.filter(
+                  (user) =>
+                      JSON.stringify(user.profession) ===
+                      JSON.stringify(selectedProf)
+              )
             : users;
-        console.log("filteredSearch = ", filteredSearch);
 
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
@@ -105,7 +81,6 @@ const Users = () => {
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
         const clearFilter = () => {
             setSelectedProf();
-            setStrFound("");
         };
 
         return (
@@ -128,16 +103,13 @@ const Users = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
-                    <div className="col-md-6 p-4 ">
-                        <form onSubmit={handleSubmint}>
-                            <SearchField
-                                id="search"
-                                name="search"
-                                value={strFound}
-                                onChange={handleChange}
-                            />
-                        </form>
-                    </div>
+                    <input
+                        type="text"
+                        name="searchQuery"
+                        placeholder="Search..."
+                        onChange={handleSearchQuery}
+                        value={searchQuery}
+                    />
                     {count > 0 && (
                         <UserTable
                             users={usersCrop}
@@ -161,8 +133,8 @@ const Users = () => {
     }
     return "loading...";
 };
-Users.propTypes = {
+UsersListPage.propTypes = {
     users: PropTypes.array
 };
 
-export default Users;
+export default UsersListPage;

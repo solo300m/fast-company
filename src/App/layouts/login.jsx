@@ -1,101 +1,52 @@
-import React, { useEffect, useState } from "react";
-import { TextField } from "../components/common/form/textField";
-import { validator } from "../utils/validator";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import LoginForm from "../components/ui/loginForm";
+import RegisterForm from "../components/ui/registerForm";
 
-export const Login = () => {
-    const [data, setData] = useState({ email: "", password: "" });
-    const [errors, setErrors] = useState({});
-    useEffect(() => {
-        validate();
-    }, [data]);
-
-    const validatorConfig = {
-        email: {
-            isRequired: {
-                message: "Электронная почта обязательна для заполнения"
-            },
-            isEmail: {
-                message: "Email введен не корректно!"
-            }
-        },
-        password: {
-            isRequired: {
-                message: "Пароль обязателен для заполнения"
-            },
-            isCapital: {
-                message: "Пароль должен содержать хотябы одну заглавную букву"
-            },
-            isContainDigit: {
-                message: "Пароль должен содержать хотябы одну цифру"
-            },
-            min: {
-                message: "Минимальное количество символов 8",
-                value: 8
-            }
-        }
+const Login = () => {
+    const { type } = useParams();
+    const [formType, setFormType] = useState(
+        type === "register" ? type : "login"
+    );
+    const toggleFormType = (params) => {
+        setFormType((prevState) =>
+            prevState === "register" ? "login" : "register"
+        );
     };
 
-    const validate = () => {
-        const errors = validator(data, validatorConfig);
-        // for (const fildName in data) {
-        //     if (data[fildName].trim() === "") {
-        //         errors[fildName] = `${fildName} обязательное для заполнения`;
-        //     }
-        // }
-
-        setErrors(errors);
-        return Object.keys(errors).length === 0;
-    };
-    console.log(errors);
-    // const [password, setPassword] = useState("");
-    const handleChange = (e) => {
-        setData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value
-        }));
-    };
-    // const handlePasword = (e) => {
-    //     setPassword(e.target.value);
-    // };
-    const isValid = Object.keys(errors).length === 0;
-
-    const handleSubmint = (e) => {
-        e.preventDefault();
-
-        const isValidate = validate();
-
-        if (!isValidate) return;
-        console.log(data);
-    };
     return (
         <div className="container mt-5">
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
-                    <h3 className="mb-3">Login</h3>
-                    <form onSubmit={handleSubmint}>
-                        <TextField
-                            label="Электронная почта  "
-                            type="text"
-                            name="email"
-                            value={data.email}
-                            onChange={handleChange}
-                            error={errors.email}
-                        />
-                        <TextField
-                            label="Пароль  "
-                            type="password"
-                            name="password"
-                            value={data.password}
-                            onChange={handleChange}
-                            error={errors.password}
-                        />
-                        <button type="submit" disabled={!isValid} className="btn btn-primary w-100 mx-auto">
-                            Submint
-                        </button>
-                        {/* <button type="button">Кнопка не Submit</button> */}
-                    </form>
+                    {formType === "register" ? (
+                        <>
+                            <h3 className="mb-4">Register</h3>
+                            <RegisterForm />
+                            <p>
+                                Already have account?{" "}
+                                <a role="button" onClick={toggleFormType}>
+                                    {" "}
+                                    Sign In
+                                </a>
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <h3 className="mb-4">Login</h3>
+                            <LoginForm />
+                            <p>
+                                Dont have account?{" "}
+                                <a role="button" onClick={toggleFormType}>
+                                    {" "}
+                                    Sign Up
+                                </a>
+                            </p>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
     );
 };
+
+export default Login;

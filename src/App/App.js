@@ -1,22 +1,23 @@
 import React from "react";
-import Users from "./components/users";
-import { NavBar } from "./components/navigation/navBar";
-import { Route, Switch } from "react-router-dom/cjs/react-router-dom.min";
-import { Main } from "./layouts/main";
-import { Login } from "./layouts/login";
-import { CardUser } from "./layouts/cardUser";
+import { Route, Switch, Redirect } from "react-router-dom";
+
+import Users from "./layouts/users";
+import Login from "./layouts/login";
+import Main from "./layouts/main";
+import NavBar from "./components/ui/navBar";
 
 function App() {
     return (
-        <>
+        <div>
             <NavBar />
             <Switch>
-                <Route exact path="/" component={Main} />
-                <Route path="/login" component={Login} />
-                <Route path="/users" component={Users} />
-                <Route path="/carduser/:userId?" component={CardUser} />
+                <Route path="/users/:userId?" component={Users} />
+                <Route path="/login/:type?" component={Login} />
+                <Route path="/" exact component={Main} />
+                <Redirect to="/" />
             </Switch>
-        </>
+        </div>
     );
 }
+
 export default App;
