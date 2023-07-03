@@ -123,6 +123,7 @@ const RegisterForm = () => {
             qualities: getQualities(qualities)
         });
     };
+
     return (
         <form onSubmit={handleSubmit}>
             <TextField
@@ -148,6 +149,7 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 value={data.profession}
                 error={errors.profession}
+                suggested="current-password"
             />
             <RadioField
                 options={[

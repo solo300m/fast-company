@@ -5,13 +5,21 @@ import Users from "./layouts/users";
 import Login from "./layouts/login";
 import Main from "./layouts/main";
 import NavBar from "./components/ui/navBar";
+import Edit from "./layouts/edit";
+// import RegisterForm from "./components/ui/registerForm";
 
 function App() {
+    // const [path, setPath] = useState("/");
+    // const handleChange = (param) => {
+    //     setPath(param);
+    // };
     return (
         <div>
             <NavBar />
             <Switch>
+                <Route path="/users/:userId/edit/" component={Edit} />
                 <Route path="/users/:userId?" component={Users} />
+
                 <Route path="/login/:type?" component={Login} />
                 <Route path="/" exact component={Main} />
                 <Redirect to="/" />

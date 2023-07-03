@@ -55,7 +55,7 @@ const UsersListPage = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
-
+    // console.log(localStorage.getItem("users"));
     if (users) {
         const filteredUsers = searchQuery
             ? users.filter(

@@ -8,7 +8,8 @@ const SelectField = ({
     defaultOption,
     options,
     error,
-    name
+    name,
+    suggested
 }) => {
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
@@ -56,7 +57,8 @@ SelectField.propTypes = {
     onChange: PropTypes.func,
     error: PropTypes.string,
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-    name: PropTypes.string
+    name: PropTypes.string,
+    suggested: PropTypes.string
 };
 
 export default SelectField;
