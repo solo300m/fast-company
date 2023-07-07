@@ -1,0 +1,21 @@
+.background_style {
+    background-image: url("../../../../public/acspike.jpg");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    width: 65px;
+    height: 65px;
+}
+
+.ikon-custom-x {
+    background-image: url("../../../../public/x.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 56px;
+    height: 48px;
+}
+.btn-custom-x{
+    margin-left: 220px;
+}
